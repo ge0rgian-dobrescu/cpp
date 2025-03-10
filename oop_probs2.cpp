@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip> // librarie necesara pentru setw (setarea latimii minime la 2 caractere) / setfill ('char') (umplerea spatiilor libere cu 'char' daca valoarea are o singura cifra).+
 #include <ctime>
+#include <unistd.h> // librarie care ne permite sa folosim functia 'sleep(const)', const=perioada de timp in secunde.
 
 using namespace std;
 
@@ -43,18 +44,31 @@ class perioadaTimp{
 class perioadaTimp{
 
     public:
-    perioadaTimp(){ // constructor default - nu are nevoie de definirea parametrilor
+    void start(){
+    while(true){ // constructor default - nu are nevoie de definirea parametrilor
         time_t timp_curent = time(0); /* "time_t" - functie din libraria <ctime> care defineste un moment pornind de la (data 01 ianuarie, anul 1900, iar ora 00:00:00 UTC). 
                                         "time(0)" - defineste momentul curent. */
         tm *localTime = localtime(&timp_curent); /* "tm" - tip de data, definita in <ctime>, care afiseaza timpul intr-un format detaliat (AN/LUNA/ZI/ORA/MIN/SEC).
                                             "localtime" - converteste timpul in structura tm, oferind informatii despre data si ora.
                                             tipul de data "tm" - poate primi parametru doar un pointer.*/
-        
+        #ifdef _WIN32
+            system('cls');
+        #else
+            system("clear");
+        #endif
+
         cout << "Data si ora curenta: " << 1900 + localTime->tm_year << "/" << 1 + localTime->tm_mon << "/" << localTime->tm_mday << " " << setw(2) << setfill('0') <<  localTime->tm_hour << ":" << setw(2) << setfill('0') << localTime->tm_min << ":" << setw(2) << setfill('0') << localTime->tm_sec << endl;
                                         /* trebuie adaugat 1900 deoarece localTime->tm_year returneaza diferenta dintre anul curent si anul 1900.*/
 
         int oreRamase = 23 - localTime->tm_hour;
         cout << "Ore ramase pana la finalul zilei: " << setw(2) << setfill('0') << oreRamase <<":"<< setw(2) << setfill('0') << localTime->tm_min << ":" << setw(2) << setfill('0') << localTime->tm_sec << endl;
+        
+        #ifdef _WIN32 // if specific pentru compilator WINDOWS - se verifica daca programul ruleaza pe Windows.
+            _sleep(1000); // 1000ms=1ms
+        #else
+            sleep(1);
+        #endif
+        }
     }
 };
 
@@ -69,7 +83,9 @@ int main(){
 
     perioadaTimp cnt(h, m, s, zi, l);
     */
+   
     perioadaTimp timp;
+    timp.start();
 
     return 0;
 
