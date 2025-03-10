@@ -61,7 +61,9 @@ class perioadaTimp{
                                         /* trebuie adaugat 1900 deoarece localTime->tm_year returneaza diferenta dintre anul curent si anul 1900.*/
 
         int oreRamase = 23 - localTime->tm_hour;
-        cout << "Ore ramase pana la finalul zilei: " << setw(2) << setfill('0') << oreRamase <<":"<< setw(2) << setfill('0') << localTime->tm_min << ":" << setw(2) << setfill('0') << localTime->tm_sec << endl;
+        int minRamase = 59 - localTime->tm_min;
+        int secRamase = 59 - localTime->tm_sec;
+        cout << "Ore ramase pana la finalul zilei: " << setw(2) << setfill('0') << oreRamase <<":"<< setw(2) << setfill('0') << minRamase << ":" << setw(2) << setfill('0') << secRamase << endl;
         
         #ifdef _WIN32 // if specific pentru compilator WINDOWS - se verifica daca programul ruleaza pe Windows.
             _sleep(1000); // 1000ms=1ms
